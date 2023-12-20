@@ -5,7 +5,6 @@ export const productSchema = z.object({
   title: z.string(),
   price: z.number(),
   description: z.string().optional(),
-  image: z.string().optional(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });
