@@ -41,3 +41,5 @@ Design is not important, but it should be functional.
 1. Display a form with the product title, description, and price.
 2. The form should be pre-populated with the product data.
 3. Allow the user to edit the product using the provided API.
+
+![App Excalidraw](public/diagram/app.png)
