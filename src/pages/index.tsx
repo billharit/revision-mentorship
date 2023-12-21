@@ -1,30 +1,44 @@
-import { BookMarked } from 'lucide-react';
 import * as React from 'react';
 
 import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import PrimaryLink from '@/components/links/PrimaryLink';
+import ButtonLink from '@/components/links/ButtonLink';
 import Seo from '@/components/Seo';
+import LoadingSpinner from '@/components/Spinnner';
+
+import ProductListCard from '@/pages/_components/product-list-card';
+
+import { Product } from '@/types/product';
 
 export default function HomePage() {
+  const [productList, setProductList] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch('/api/product');
+      const result = await res.json();
+      setProductList(result.data);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    };
+    fetchData();
+  }, []);
   return (
     <Layout>
-      {/* <Seo templateTitle='Home' /> */}
+      <Seo templateTitle='Product List' />
       <Seo />
 
-      <main>
-        <section className='bg-white'>
-          <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12 text-center'>
-            <BookMarked size={48} />
-            <h1 className='mt-4'>Revision-Style Mentorship</h1>
-            <p className='mt-2 text-gray-500'>
-              A template for revision-style mentorship by Theodorus Clarence
-            </p>
-            <ArrowLink as={PrimaryLink} className='mt-2' href='/api-tester'>
-              /api-tester
-            </ArrowLink>
-          </div>
-        </section>
+      <main className='layout'>
+        <ButtonLink href='/add-product'>Add Product</ButtonLink>
+        <ul className='mt-4 grid grid-cols-3 gap-4'>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            productList.map((product: Product) => (
+              <ProductListCard product={product} key={product.id} />
+            ))
+          )}
+        </ul>
       </main>
     </Layout>
   );
